@@ -35,6 +35,10 @@ module.exports = {
                     },
                 },
             },
+            {
+                test: /\.wasm$/,
+                type: "asset/resource", // 或者使用 file-loader
+            },
         ],
     },
     experiments: {
