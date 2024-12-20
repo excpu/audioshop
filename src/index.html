@@ -12,31 +12,32 @@
     <!-- 顶部操作栏 -->
     <div class="top-bar full-width">
         <button>输出设置</button>
+        <button>编码设置</button>
         <button>程序设置</button>
     </div>
     <!-- 文件列表 -->
     <div class="file-list full-width">
-        
-    <table>
-        <thead>
-            <tr>
-                <th>艺术家</th>
-                <th>标题</th>
-                <th>曲目</th>
-                <th>长度</th>
-                <th>大小</th>
-            </tr>
-        </thead>
-        <tbody id="file-list-body">
-            <!-- <tr data-id="0" class="file-list-child" >
+
+        <table>
+            <thead>
+                <tr>
+                    <th>艺术家</th>
+                    <th>标题</th>
+                    <th>曲目</th>
+                    <th>长度</th>
+                    <th>大小</th>
+                </tr>
+            </thead>
+            <tbody id="file-list-body">
+                <!-- <tr data-id="0" class="file-list-child" >
                 <td>Go哥，妮妮</td>
                 <td>把爱留在 CS:GO</td>
                 <td></td>
                 <td>1:20</td>
                 <td>3.5MB</td>
             </tr> -->
-        </tbody>
-    </table>
+            </tbody>
+        </table>
     </div>
     <!-- 操作 -->
     <div class="operation full-width">
@@ -44,19 +45,21 @@
         <div class="operation-info"></div>
         <div class="operation-choose">
             <button id="add-files">添加文件</button>
-            <button>清空文件</button><br>
-            艺术家<input id="element-artist" type="text"><br>
-            标题<input type="text"><br>
-            曲目<input type="text"><br>
-            年份<input type="text"><br>
-            说明<textarea></textarea><br>
+            <button id="clear-files">清空文件</button><br>
+            <span id="element-total">
+                艺术家<input id="element-artist" type="text"><br>
+                标题<input id="element-title" type="text"><br>
+                曲目<input id="element-track" type="text"><br>
+                年份<input id="element-year" type="text"><br>
+                说明<textarea id="element-comment"></textarea><br>
+            </span>
             <select></select>
             <button>开始转换</button>
         </div>
     </div>
     <!-- 不显示的元素 -->
     <div class="hide">
-        <input type="file" multiple id="file-input"/>
+        <input type="file" multiple id="file-input" />
     </div>
 
 </body>

@@ -42,6 +42,11 @@ export default class FileProcess {
     }
 
     // 更新
+    updateTag(id, prop) {
+        if(prop = "artist"){
+            
+        }
+    }
 
     // 后期迁移 - DOM操作
     fileShow(id, artist, title, number, length, size) {
@@ -58,4 +63,12 @@ export default class FileProcess {
         fileListBody.insertAdjacentHTML('beforeend', node);
     }
 
+    // 显示到输入框
+    showTagDetail(id, tagShow) {
+        tagShow.artist.value = this.fileList[id][1].tags.artist;
+        tagShow.title.value = this.fileList[id][1].tags.title;
+        tagShow.track.value = this.fileList[id][1].tags.track;
+        tagShow.year.value = this.fileList[id][1].tags.year;
+        tagShow.comment.value = this.fileList[id][1].tags.comment;
+    }
 }
