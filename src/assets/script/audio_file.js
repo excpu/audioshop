@@ -24,7 +24,6 @@ export default class AudioFile {
     /**
    * 构建音频文件
    * @param {File} file - 音频文件对象（File 对象通常是从 <input type="file"> 获取的）
-   * @returns {boolean} true 表示创建成功；false 表示构建错误或此文件不被支持
    */
     constructor(file) {
         //常量
@@ -32,29 +31,42 @@ export default class AudioFile {
         //判断字段
         this.file = file;
         this.tagDataStatus = false;
-        //命名规则：Math.random()的MD5数值 + 当前时间戳 + 原文件名
-        this.uniqueName = `${md5(String(Math.random()))}-${new Date().getTime()}-${file.name}`;
+        //命名规则：Math.random() + 当前时间戳 + 原文件名
+        this.uniqueName = `${Math.random()}-${new Date().getTime()}-${file.name}`;
         this.fileExt = file.name.split('.').pop().toLowerCase();
         this.filePre = file.name.replace(/\.[^/.]+$/, '');
         //用户选择的名字
         this.prefrredName = null;
         //判断是否为支持格式
         if (supportedEct.some(item => item === this.fileExt)) {
-            //元数据
-            this.getMediaTag();
+            this.supported = true;
         } else {
-            return false;
+            // 格式不被支持
+            this.supported = false;
         }
     }
 
     async getMediaTag() {
         try {
-            const metadata = await parseBlob(this.file);
+            this.metadata = await parseBlob(this.file);
             this.tagDataStatus = true;
-            console.log(metadata);
+            this.customTags();
         } catch (error) {
             console.error('Error parsing metadata:', error.message);
         }
+    }
+
+    customTags() {
+        this.tags = {
+            title: this.metadata.common.title || this.filePre,
+            artist: this.metadata.common.artist ?? "",
+            track: this.metadata.common.track.no ?? "",
+            year: this.metadata.common.date ?? "",
+            comment: this.metadata.common.comment[0].text ?? "",
+        }
+        this.tags.track = String(this.tags.track);
+
+        console.log(this.tags);
     }
 
     getOriginalBlob() {

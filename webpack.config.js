@@ -9,10 +9,12 @@ module.exports = {
         clean: true, // 自动清理旧的 dist 文件
     },
     mode: 'development',
+    devtool: 'source-map',
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html', // 指定模板文件
             filename: 'index.html', // 输出文件名，默认也是 index.html
+            favicon: './src/assets/image/icon.webp',
         }),
     ],
     module: {

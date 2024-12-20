@@ -1,7 +1,63 @@
 body{
     margin: 0;
+    overflow: hidden;
 }
 
 .hide{
     display: none;
+}
+
+.full-width{
+    width: 100vw;
+}
+
+.top-bar{
+    height: 30px;
+    display: flex;
+    justify-content: left;
+}
+
+.file-list{
+    height: calc(50vh - 30px);
+    overflow-y: scroll;
+}
+
+.operation{
+    height: 50vh;
+    display: flex;
+}
+
+/* 表格 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 8px;
+}
+
+th {
+    background-color: #a8d5ba;
+    color: white;
+}
+
+.file-list-child{
+    cursor: pointer;
+    user-select: none;
+}
+
+tr:nth-child(even) {
+    background-color: #eaf7e4;
+}
+
+tr:nth-child(odd) {
+    background-color: #f6fff8;
+}
+
+tr:hover {
+    background-color: #d4f1c5;
 }
