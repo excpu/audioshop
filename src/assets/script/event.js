@@ -10,6 +10,7 @@ const tagShow = {
     track: document.getElementById('element-track'),
     year: document.getElementById('element-year'),
     comment: document.getElementById('element-comment'),
+    cover: document.getElementById('element-cover'),
 }
 
 

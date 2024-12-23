@@ -46,7 +46,7 @@
         <div class="operation-choose">
             <button id="add-files">添加文件</button>
             <button id="clear-files">清空文件</button><br>
-            <img src="./assets/image/cover_holder.png" class="cover"/>
+            <img id="element-cover" src="./assets/image/cover_holder.png" class="cover" />
             <span id="element-total">
                 艺术家<input id="element-artist" type="text"><br>
                 标题<input id="element-title" type="text"><br>
@@ -55,7 +55,7 @@
                 年份<input id="element-year" type="text"><br>
                 说明<textarea id="element-comment"></textarea><br>
             </span>
-            <button>保存</button>
+            <button>保存元数据修改</button>
             <select>
                 <option value="o">MP3 (LAME)</option>
                 <option value="option2">AAC (FFmpeg AAC)</option>
@@ -70,6 +70,7 @@
     <!-- 不显示的元素 -->
     <div class="hide">
         <input type="file" multiple id="file-input" />
+        <input type="file" id="cover-input" />
     </div>
 
 </body>

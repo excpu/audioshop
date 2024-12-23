@@ -66,10 +66,43 @@ export default class AudioFile {
             comment: Array.isArray(this.metadata.common.comment) && this.metadata.common.comment.length > 0
                 ? this.metadata.common.comment[0].text
                 : "",
+            cover: {
+                contain: false,
+                type: null,
+                data: null,
+            }
         }
         this.tags.track = String(this.tags.track);
 
+        if (Array.isArray(this.metadata.common.picture)) {
+            this.tags.cover.contain = true;
+            this.tags.cover.type = this.metadata.common.picture[0].format;
+            this.tags.cover.data = this.metadata.common.picture[0].data;
+        }
+
         console.log(this.tags);
+    }
+
+    updateTag(data) {
+        
+    }
+
+    updataCover(file) {
+
+    }
+
+    getCoverUrl() {
+        if (this.tags.cover.contain) {
+            return {
+                status: true,
+                url: this.uint8ArrayToBlobUrl(this.tags.cover.data, this.tags.cover.type),
+            };
+        } else {
+            this.coverStatus = false;
+            return {
+                status: false,
+            };
+        }
     }
 
     getOriginalBlob() {
@@ -91,5 +124,16 @@ export default class AudioFile {
 
     destroy() {
         this.file = null;
+    }
+
+    // 工具方法
+    uint8ArrayToBlobUrl(uint8Array, mimeType) {
+        // 创建 Blob 对象
+        const blob = new Blob([uint8Array], { type: mimeType });
+
+        // 创建 Blob URL
+        const blobUrl = URL.createObjectURL(blob);
+
+        return blobUrl;
     }
 }

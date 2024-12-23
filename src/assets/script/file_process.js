@@ -45,7 +45,7 @@ export default class FileProcess {
     }
 
     // 更新
-    updateTag(id, prop) {
+    updateTag(id, data) {
         if (prop = "artist") {
 
         }
@@ -74,5 +74,12 @@ export default class FileProcess {
         tagShow.track.value = this.fileList[id][1].tags.track;
         tagShow.year.value = this.fileList[id][1].tags.year;
         tagShow.comment.value = this.fileList[id][1].tags.comment;
+        //显示封面
+        let coverUrl = this.fileList[id][1].getCoverUrl();
+        if (coverUrl.status) {
+            console.log(coverUrl);
+            tagShow.cover.src = coverUrl.url;
+        }
+
     }
 }
