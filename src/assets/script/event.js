@@ -6,6 +6,7 @@ const fileInput = document.getElementById('file-input');
 const tagShow = {
     artist: document.getElementById('element-artist'),
     title: document.getElementById('element-title'),
+    album: document.getElementById('element-album'),
     track: document.getElementById('element-track'),
     year: document.getElementById('element-year'),
     comment: document.getElementById('element-comment'),
@@ -38,11 +39,14 @@ clearFiles.addEventListener('click', function () {
     fileProcess.clear();
 });
 
+//读取设置
+
 
 
 // 加载行为，清空选择框
 tagShow.artist.value = '';
 tagShow.title.value = '';
+tagShow.album.value = '';
 tagShow.comment.value = '';
 tagShow.track.value = '';
 tagShow.year.value = '';

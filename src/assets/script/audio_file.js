@@ -60,9 +60,12 @@ export default class AudioFile {
         this.tags = {
             title: this.metadata.common.title || this.filePre,
             artist: this.metadata.common.artist ?? "",
+            album: this.metadata.common.album ?? "",
             track: this.metadata.common.track.no ?? "",
             year: this.metadata.common.date ?? "",
-            comment: this.metadata.common.comment[0].text ?? "",
+            comment: Array.isArray(this.metadata.common.comment) && this.metadata.common.comment.length > 0
+                ? this.metadata.common.comment[0].text
+                : "",
         }
         this.tags.track = String(this.tags.track);
 

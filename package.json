@@ -4,8 +4,8 @@
   "description": "音码通 - 在浏览器中转码以及批量修改音频",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack serve"
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
     "babel-loader": "^9.2.1",
     "css-loader": "^7.1.2",
     "file-loader": "^6.2.0",
+    "html-loader": "^5.1.0",
     "style-loader": "^4.0.0",
     "webpack": "^5.97.1",
     "webpack-cli": "^5.1.4",
@@ -26,6 +27,7 @@
     "@ffmpeg/ffmpeg": "^0.12.10",
     "@ffmpeg/util": "^0.12.1",
     "html-webpack-plugin": "^5.6.3",
-    "music-metadata": "^10.6.4"
+    "music-metadata": "^10.6.4",
+    "url-loader": "^4.1.1"
   }
 }
