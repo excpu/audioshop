@@ -1,28 +1,28 @@
-body{
+body {
     margin: 0;
     overflow: hidden;
 }
 
-.hide{
+.hide {
     display: none;
 }
 
-.full-width{
+.full-width {
     width: 100vw;
 }
 
-.top-bar{
+.top-bar {
     height: 30px;
     display: flex;
     justify-content: left;
 }
 
-.file-list{
+.file-list {
     height: calc(50vh - 30px);
     overflow-y: scroll;
 }
 
-.operation{
+.operation {
     height: 50vh;
     display: flex;
 }
@@ -45,7 +45,7 @@ th {
     color: white;
 }
 
-.file-list-child{
+.file-list-child {
     cursor: pointer;
     user-select: none;
 }
@@ -62,6 +62,11 @@ tr:hover {
     background-color: #d4f1c5;
 }
 
-.cover{
-    width: 50px;
+.cover {
+    width: 70px;
+    cursor: pointer;
+}
+
+.popup {
+    display: none;
 }

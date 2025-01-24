@@ -7,6 +7,7 @@ export default class FileProcess {
     constructor() {
         this.counter = 0;
         this.fileList = [];
+        this.display = null;
     }
     // files 直接传入多个文件的数组
     async addNew(files) {
@@ -45,17 +46,24 @@ export default class FileProcess {
     }
 
     // 更新
-    updateTag(id, data) {
-        if (prop = "artist") {
-
+    updateTag(data) {
+        if (this.display != null) {
+            this.fileList[this.display][1].updateTag(data);
+        } else {
+            //throw ('Unable to update tag due to a unselected item.');
+            return false;
         }
+        // 在UI界面上直观显示修改
+        document.getElementById(`file-list-child-no${this.display}`).children[0].innerHTML = data.artist;
+        document.getElementById(`file-list-child-no${this.display}`).children[1].innerHTML = data.title;
+        document.getElementById(`file-list-child-no${this.display}`).children[2].innerHTML = data.track;
     }
 
     // 后期迁移 - DOM操作
     fileShow(id, artist, title, number, length, size) {
         const fileListBody = document.getElementById('file-list-body');
         let node = `
-                <tr data-id="${id}" class="file-list-child" >
+                <tr data-id="${id}" class="file-list-child" id="file-list-child-no${id}">
                     <td>${artist}</td>
                     <td>${title}</td>
                     <td>${number}</td>
@@ -80,6 +88,7 @@ export default class FileProcess {
             console.log(coverUrl);
             tagShow.cover.src = coverUrl.url;
         }
-
+        //保存当前选中的项目
+        this.display = id;
     }
 }

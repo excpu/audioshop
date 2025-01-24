@@ -84,10 +84,16 @@ export default class AudioFile {
     }
 
     updateTag(data) {
-        
+        this.tags.artist = data.artist;
+        this.tags.album = data.album;
+        this.tags.title = data.title;
+        this.tags.track = data.track;
+        this.tags.year = data.year;
+        this.tags.comment = data.comment;
+
     }
 
-    updataCover(file) {
+    async updataCover(file) {
 
     }
 
@@ -135,5 +141,20 @@ export default class AudioFile {
         const blobUrl = URL.createObjectURL(blob);
 
         return blobUrl;
+    }
+
+    readFileAsync(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            // 成功读取
+            reader.onload = () => resolve(reader.result);
+
+            // 读取失败
+            reader.onerror = () => reject(reader.error);
+
+            // 开始读取文件为 ArrayBuffer
+            reader.readAsArrayBuffer(file);
+        });
     }
 }

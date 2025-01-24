@@ -41,4 +41,9 @@ export default class Setting {
     updateSetting() {
         localStorage.setItem('audioshop', JSON.stringify(this.setting));
     }
+
+    updateEncoder(encoder){
+        this.setting.encoder = encoder;
+        this.updateSetting();
+    }
 }
