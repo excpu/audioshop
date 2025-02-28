@@ -7,6 +7,7 @@ export default class FileProcess {
     constructor() {
         this.counter = 0;
         this.fileList = [];
+        // 当前选中的在编辑元数据的文件
         this.display = null;
     }
     // files 直接传入多个文件的数组

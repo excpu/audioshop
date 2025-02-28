@@ -30,7 +30,7 @@
             </thead>
             <tbody id="file-list-body">
                 <!-- <tr data-id="0" class="file-list-child" >
-                <td>Go哥，妮妮</td>
+                <td>Go哥</td>
                 <td>把爱留在 CS:GO</td>
                 <td></td>
                 <td>1:20</td>
@@ -77,6 +77,29 @@
                     <option value="vbr">VBR</option>
                     <option value="cbr">CBR</option>
                 </select>
+                质量
+                <select>
+                    <option value="0">0 (最佳)</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9 (最差)</option>
+                </select>
+                码率
+                <select>
+                    <option value="320">320 kbps</option>
+                    <option value="256">256 kbps</option>
+                    <option value="192">192 kbps</option>
+                    <option value="128">128 kbps</option>
+                    <option value="64">64 kbps</option>
+                    <option value="32">32 kbps</option>
+                    <option value="16">16 kbps</option>
+                </select>
             </span>
             <span id="aac-parameter">
                 <h1>AAC</h1>
@@ -96,7 +119,7 @@
     <!-- 不显示的元素 -->
     <div class="hide">
         <input type="file" multiple id="file-input" />
-        <input type="file" id="cover-input" />
+        <input type="file" id="cover-input" accept=".png,.jpg,.jpeg" />
     </div>
 
 </body>

@@ -4,6 +4,8 @@ const clearFiles = document.getElementById('clear-files');
 const fileInput = document.getElementById('file-input');
 const saveMetadata = document.getElementById('save-metadata');
 const encoderSelector = document.getElementById('encoder-selector');
+const coverEle = document.getElementById('element-cover');
+const coverInput = document.getElementById('cover-input');
 
 const tagShow = {
     artist: document.getElementById('element-artist'),
@@ -57,6 +59,11 @@ saveMetadata.addEventListener('click', function () {
     fileProcess.updateTag(data);
 });
 
+// 封面更换 (更换封面独立于其他元数据处理)
+coverEle.addEventListener('click', function () {
+    coverInput.click();
+});
+
 //读取设置
 encoderSelector.value = setting.setting.encoder;
 encoderChange();
@@ -80,4 +87,6 @@ function encoderChange() {
         setting.updateEncoder(event.target.value);
     });
 }
+
+// 编码器详细参数设置
 
