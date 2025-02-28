@@ -87,7 +87,7 @@
     <!-- 设置弹出框 -->
     <div class="popup">
         <div class="popup-content">
-            <span id="mp3-parameter">
+            <span class="pop-hide" id="mp3-parameter">
                 <h1>MP3</h1>
                 编码方式
                 <select>
@@ -118,7 +118,7 @@
                     <option value="16">16 kbps</option>
                 </select>
             </span>
-            <span id="aac-parameter">
+            <span class="pop-hide" id="aac-parameter">
                 <h1>AAC</h1>
                 选择封装
                 <select>
@@ -129,6 +129,22 @@
                 <select>
                     <option value="vbr">VBR</option>
                     <option value="cbr">CBR</option>
+                </select>
+                质量
+                <select>
+                    <option value="0">10 (最佳)</option>
+                    <option value="1">9</option>
+                    <option value="2">8</option>
+                    <option value="3">7</option>
+                    <option value="4">6</option>
+                    <option value="5">5</option>
+                    <option value="6">4</option>
+                    <option value="7">3</option>
+                    <option value="8">2</option>
+                    <option value="7">1</option>
+                    <option value="8">0</option>
+                    <option value="7">-1</option>
+                    <option value="8">-2 (最差)</option>
                 </select>
                 码率
                 <select>
@@ -141,7 +157,7 @@
                     <option value="16">16 kbps</option>
                 </select>
             </span>
-            <span id="ogg-parameter">
+            <span class="pop-hide" id="ogg-parameter">
                 <h1>OGG-Vorbis</h1>
                 选择封装
                 <select>
@@ -164,6 +180,7 @@
                     <option value="16">16 kbps</option>
                 </select>
             </span>
+            <button>保存并且退出</button>
         </div>
     </div>
     <!-- 不显示的元素 -->

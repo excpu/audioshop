@@ -1,0 +1,9 @@
+.popup {
+    display: none;
+    width: 100vw;
+    height: 100vw;
+}
+
+.pop-hide{
+    display: none;
+}

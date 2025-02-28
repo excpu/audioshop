@@ -62,10 +62,6 @@ tr:hover {
     background-color: #d4f1c5;
 }
 
-.popup {
-    display: none;
-}
-
 flex-break {
     flex-basis: 100%;
     height: 0;
