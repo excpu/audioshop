@@ -45,17 +45,7 @@
         <div class="operation-info"></div>
         <div class="operation-choose">
             <button id="add-files">添加文件</button>
-            <button id="clear-files">清空文件</button><br>
-            <img id="element-cover" src="./assets/image/cover_holder.png" class="cover" />
-            <span id="element-total">
-                艺术家<input id="element-artist" type="text"><br>
-                标题<input id="element-title" type="text"><br>
-                专辑<input id="element-album" type="text"><br>
-                曲目<input id="element-track" type="text"><br>
-                年份<input id="element-year" type="text"><br>
-                说明<textarea id="element-comment"></textarea><br>
-            </span>
-            <button id="save-metadata">保存元数据修改</button>
+            <button id="clear-files">清空文件</button>
             <select id="encoder-selector">
                 <option value="mp3">MP3 (LAME)</option>
                 <option value="aac">AAC (FFmpeg AAC)</option>
@@ -63,8 +53,35 @@
                 <option value="opus">OPUS (libOpus)</option>
                 <option value="flac">FLAC (FFmpeg FLAC)</option>
                 <option value="wav">WAV (PCM)</option>
-            </select>
-            <button>开始转换</button>
+            </select><br>
+            <hr>
+            <div class="meta-input full-width">
+                <div meta-input-cover>
+                    <img id="element-cover" src="./assets/image/cover_holder.png" class="cover" />
+                </div>
+                <div class="meta-input-in">
+                    <span id="element-total">
+                        <div class="element-total-c1">
+                            <span>标题：</span><input id="element-title" type="text"><br>
+                            <span>专辑：</span><input id="element-album" type="text"><br>
+                            <span>年份：</span><input id="element-year" type="text"><br>
+                        </div>
+                        <div class="element-total-c2">
+                            <span>艺术家：</span><input id="element-artist" type="text"><br>
+                            <span>曲目：</span><input id="element-track" type="text"><br>
+                        </div>
+                        <flex-break></flex-break>
+                        <div class="element-total-bottom">
+                            <span>说明：</span><textarea id="element-comment"></textarea><br>
+                        </div>
+                        <flex-break></flex-break>
+                        <button id="save-metadata">保存元数据修改</button>
+                    </span>
+                </div>
+                <div class="meta-input-btn">
+                    <button>开始转换</button>
+                </div>
+            </div>
         </div>
     </div>
     <!-- 设置弹出框 -->

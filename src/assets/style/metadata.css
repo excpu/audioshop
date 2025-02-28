@@ -1,0 +1,47 @@
+.meta-input {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.cover {
+    width: 100%;
+    max-width: 120px;
+    height: auto;
+    cursor: pointer;
+    margin: 5px;
+}
+
+#element-total {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+#element-total span {
+    width: 65px;
+    display: inline-block;
+}
+
+#element-total input {
+    width: calc(50vw - 300px);
+    min-width: 50px;
+}
+
+.meta-input-btn {
+    min-width: 115px;
+}
+
+.element-total-bottom{
+    min-width: 115px;
+    width: calc(100% - 225px);
+}
+
+#element-total textarea {
+    width: 100%;
+}
+
+#element-total button{
+    margin-top: 10px;
+}
