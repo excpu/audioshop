@@ -1,16 +1,37 @@
 .meta-input {
     display: flex;
     justify-content: space-around;
-    margin-top: 15px;
-    gap: 10px;
+    align-items: stretch;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.meta-input-cover {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cover {
     width: 100%;
-    max-width: 120px;
+    max-width: 90px;
     height: auto;
+    border-radius: 4px;
+    border: 1px solid var(--border);
     cursor: pointer;
-    margin: 5px;
+    transition: border-color .12s ease;
+}
+
+.cover:hover {
+    border-color: var(--green);
+}
+
+.meta-input-in {
+    flex: 1 1 auto;
 }
 
 #element-total {
@@ -22,6 +43,23 @@
 #element-total span {
     width: 65px;
     display: inline-block;
+    color: var(--green-darkest);
+}
+
+#element-total input,
+#element-total textarea {
+    border: 1px solid var(--green-light);
+    border-radius: 3px;
+    padding: 3px 5px;
+    font-family: inherit;
+    font-size: 12px;
+}
+
+#element-total input:focus,
+#element-total textarea:focus {
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 2px var(--green-hover);
 }
 
 #element-total input {
@@ -30,18 +68,47 @@
 }
 
 .meta-input-btn {
+    flex: 0 0 auto;
     min-width: 115px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.element-total-bottom{
+.convert-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(180deg, var(--green), var(--green-dark));
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    transition: filter .12s ease;
+}
+
+.convert-btn:hover {
+    filter: brightness(1.08);
+}
+
+.convert-btn:active {
+    filter: brightness(0.95);
+}
+
+.element-total-bottom {
     min-width: 115px;
     width: calc(100% - 225px);
 }
 
 #element-total textarea {
     width: 100%;
+    resize: vertical;
 }
 
-#element-total button{
+#element-total button {
     margin-top: 10px;
 }

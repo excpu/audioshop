@@ -9,54 +9,56 @@
 
 <body>
 
-    <!-- 顶部操作栏 -->
-    <div class="top-bar full-width">
-        <button>输出设置</button>
-        <button>编码设置</button>
-        <button>程序设置</button>
-    </div>
-    <!-- 文件列表 -->
-    <div class="file-list full-width">
+    <div class="app">
+        <!-- 顶部工具栏 -->
+        <div class="top-bar">
+            <button id="output-setting-btn" class="tool-btn"><span class="tool-icon">📤</span>输出设置</button>
+            <button id="encode-setting-btn" class="tool-btn"><span class="tool-icon">🎚</span>编码设置</button>
+            <button id="program-setting-btn" class="tool-btn"><span class="tool-icon">⚙</span>程序设置</button>
+        </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>艺术家</th>
-                    <th>标题</th>
-                    <th>曲目</th>
-                    <th>长度</th>
-                    <th>大小</th>
-                </tr>
-            </thead>
-            <tbody id="file-list-body">
-                <!-- <tr data-id="0" class="file-list-child" >
+        <!-- 文件列表 -->
+        <div class="file-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>艺术家</th>
+                        <th>标题</th>
+                        <th>曲目</th>
+                        <th>长度</th>
+                        <th>大小</th>
+                    </tr>
+                </thead>
+                <tbody id="file-list-body">
+                    <!-- <tr data-id="0" class="file-list-child" >
                 <td>Go哥</td>
                 <td>把爱留在 CS:GO</td>
                 <td></td>
                 <td>1:20</td>
                 <td>3.5MB</td>
             </tr> -->
-            </tbody>
-        </table>
-    </div>
-    <!-- 操作 -->
-    <div class="operation full-width">
-        <div class="operation-status"></div>
-        <div class="operation-info"></div>
-        <div class="operation-choose">
-            <button id="add-files">添加文件</button>
-            <button id="clear-files">清空文件</button>
-            <select id="encoder-selector">
-                <option value="mp3">MP3 (LAME)</option>
-                <option value="aac">AAC (FFmpeg AAC)</option>
-                <option value="ogg">OGG (libVorbis)</option>
-                <option value="opus">OPUS (libOpus)</option>
-                <option value="flac">FLAC (FFmpeg FLAC)</option>
-                <option value="wav">WAV (PCM)</option>
-            </select><br>
-            <hr>
-            <div class="meta-input full-width">
-                <div meta-input-cover>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 操作 -->
+        <div class="operation">
+            <div class="operation-choose">
+                <button id="add-files" class="tool-btn"><span class="tool-icon">📁</span>添加文件</button>
+                <button id="clear-files" class="tool-btn"><span class="tool-icon">🗑</span>清空文件</button>
+                <span class="operation-divider"></span>
+                <label class="encoder-label" for="encoder-selector">输出格式</label>
+                <select id="encoder-selector">
+                    <option value="mp3">MP3 (LAME)</option>
+                    <option value="aac">AAC (FFmpeg AAC)</option>
+                    <!-- <option value="ogg">OGG (libVorbis)</option> -->
+                    <!-- <option value="opus">OPUS (libOpus)</option> -->
+                    <option value="flac">FLAC (FFmpeg FLAC)</option>
+                    <option value="wav">WAV (PCM)</option>
+                </select>
+            </div>
+            <div class="meta-input">
+                <div class="meta-input-cover">
                     <img id="element-cover" src="./assets/image/cover_holder.png" class="cover" />
                 </div>
                 <div class="meta-input-in">
@@ -75,12 +77,26 @@
                             <span>说明：</span><textarea id="element-comment"></textarea><br>
                         </div>
                         <flex-break></flex-break>
-                        <button id="save-metadata">保存元数据修改</button>
+                        <button id="save-metadata" class="tool-btn secondary">保存元数据修改</button>
                     </span>
                 </div>
                 <div class="meta-input-btn">
-                    <button>开始转换</button>
+                    <button id="start-convert" class="convert-btn"><span class="tool-icon">▶</span>开始转换</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <span class="operation-status"></span>
+            <span class="operation-info"></span>
+            <div class="progress-block">
+                <span class="progress-label">当前任务</span>
+                <progress id="current-progress" value="0" max="100"></progress>
+            </div>
+            <div class="progress-block">
+                <span class="progress-label">总进度</span>
+                <progress id="total-progress" value="0" max="100"></progress>
             </div>
         </div>
     </div>
@@ -90,13 +106,142 @@
             <span class="pop-hide" id="mp3-parameter">
                 <h1>MP3</h1>
                 编码方式
-                <select>
+                <select id="mp3-method">
                     <option value="vbr">VBR</option>
                     <option value="cbr">CBR</option>
                 </select>
-                质量
-                <select>
-                    <option value="0">0 (最佳)</option>
+                <div class="param-row" data-field="quality">
+                    质量
+                    <select id="mp3-quality">
+                        <option value="0">0 (最佳)</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9 (最差)</option>
+                    </select>
+                </div>
+                <div class="param-row" data-field="birate">
+                    码率
+                    <select id="mp3-birate">
+                        <option value="320">320 kbps</option>
+                        <option value="256">256 kbps</option>
+                        <option value="192">192 kbps</option>
+                        <option value="128">128 kbps</option>
+                        <option value="64">64 kbps</option>
+                        <option value="32">32 kbps</option>
+                        <option value="16">16 kbps</option>
+                    </select>
+                </div>
+            </span>
+            <span class="pop-hide" id="aac-parameter">
+                <h1>AAC</h1>
+                选择封装
+                <select id="aac-container">
+                    <option value="aac">.aac</option>
+                    <option value="m4a">.m4a</option>
+                </select>
+                编码方式
+                <select id="aac-method">
+                    <option value="vbr">VBR</option>
+                    <option value="cbr">CBR</option>
+                </select>
+                <div class="param-row" data-field="quality">
+                    质量
+                    <select id="aac-quality">
+                        <option value="0">10 (最佳)</option>
+                        <option value="1">9</option>
+                        <option value="2">8</option>
+                        <option value="3">7</option>
+                        <option value="4">6</option>
+                        <option value="5">5</option>
+                        <option value="6">4</option>
+                        <option value="7">3</option>
+                        <option value="8">2</option>
+                        <option value="9">1</option>
+                        <option value="10">0</option>
+                        <option value="11">-1</option>
+                        <option value="12">-2 (最差)</option>
+                    </select>
+                </div>
+                <div class="param-row" data-field="birate">
+                    码率
+                    <select id="aac-birate">
+                        <option value="320">320 kbps</option>
+                        <option value="256">256 kbps</option>
+                        <option value="192">192 kbps</option>
+                        <option value="128">128 kbps</option>
+                        <option value="64">64 kbps</option>
+                        <option value="32">32 kbps</option>
+                        <option value="16">16 kbps</option>
+                    </select>
+                </div>
+            </span>
+            <span class="pop-hide" id="ogg-parameter">
+                <h1>OGG-Vorbis</h1>
+                编码方式
+                <select id="ogg-method">
+                    <option value="vbr">VBR</option>
+                    <option value="cbr">CBR</option>
+                </select>
+                <div class="param-row" data-field="quality">
+                    质量
+                    <select id="ogg-quality">
+                        <option value="10">10 (最佳)</option>
+                        <option value="9">9</option>
+                        <option value="8">8</option>
+                        <option value="7">7</option>
+                        <option value="6">6</option>
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                        <option value="0">0 (最差)</option>
+                    </select>
+                </div>
+                <div class="param-row" data-field="birate">
+                    码率
+                    <select id="ogg-birate">
+                        <option value="320">320 kbps</option>
+                        <option value="256">256 kbps</option>
+                        <option value="192">192 kbps</option>
+                        <option value="128">128 kbps</option>
+                        <option value="64">64 kbps</option>
+                        <option value="32">32 kbps</option>
+                        <option value="16">16 kbps</option>
+                    </select>
+                </div>
+            </span>
+            <span class="pop-hide" id="opus-parameter">
+                <h1>OPUS</h1>
+                编码方式
+                <select id="opus-method">
+                    <option value="vbr">VBR</option>
+                    <option value="cbr">CBR</option>
+                </select>
+                <div class="param-row" data-field="birate">
+                    码率
+                    <select id="opus-birate">
+                        <option value="512">512 kbps</option>
+                        <option value="256">256 kbps</option>
+                        <option value="192">192 kbps</option>
+                        <option value="128">128 kbps</option>
+                        <option value="64">64 kbps</option>
+                        <option value="32">32 kbps</option>
+                        <option value="16">16 kbps</option>
+                    </select>
+                </div>
+            </span>
+            <span class="pop-hide" id="flac-parameter">
+                <h1>FLAC</h1>
+                压缩等级
+                <select id="flac-compression">
+                    <option value="0">0 (最快)</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -104,83 +249,14 @@
                     <option value="5">5</option>
                     <option value="6">6</option>
                     <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9 (最差)</option>
-                </select>
-                码率
-                <select>
-                    <option value="320">320 kbps</option>
-                    <option value="256">256 kbps</option>
-                    <option value="192">192 kbps</option>
-                    <option value="128">128 kbps</option>
-                    <option value="64">64 kbps</option>
-                    <option value="32">32 kbps</option>
-                    <option value="16">16 kbps</option>
+                    <option value="8">8 (最佳压缩)</option>
                 </select>
             </span>
-            <span class="pop-hide" id="aac-parameter">
-                <h1>AAC</h1>
-                选择封装
-                <select>
-                    <option value="aac">.aac</option>
-                    <option value="m4a">.m4a</option>
-                </select>
-                编码方式
-                <select>
-                    <option value="vbr">VBR</option>
-                    <option value="cbr">CBR</option>
-                </select>
-                质量
-                <select>
-                    <option value="0">10 (最佳)</option>
-                    <option value="1">9</option>
-                    <option value="2">8</option>
-                    <option value="3">7</option>
-                    <option value="4">6</option>
-                    <option value="5">5</option>
-                    <option value="6">4</option>
-                    <option value="7">3</option>
-                    <option value="8">2</option>
-                    <option value="7">1</option>
-                    <option value="8">0</option>
-                    <option value="7">-1</option>
-                    <option value="8">-2 (最差)</option>
-                </select>
-                码率
-                <select>
-                    <option value="320">320 kbps</option>
-                    <option value="256">256 kbps</option>
-                    <option value="192">192 kbps</option>
-                    <option value="128">128 kbps</option>
-                    <option value="64">64 kbps</option>
-                    <option value="32">32 kbps</option>
-                    <option value="16">16 kbps</option>
-                </select>
+            <span class="pop-hide" id="wav-parameter">
+                <h1>WAV</h1>
+                <p>WAV (PCM) 为无损原始编码，无需额外参数设置。</p>
             </span>
-            <span class="pop-hide" id="ogg-parameter">
-                <h1>OGG-Vorbis</h1>
-                选择封装
-                <select>
-                    <option value="aac">.aac</option>
-                    <option value="m4a">.m4a</option>
-                </select>
-                编码方式
-                <select>
-                    <option value="vbr">VBR</option>
-                    <option value="cbr">CBR</option>
-                </select>
-                码率
-                <select>
-                    <option value="320">320 kbps</option>
-                    <option value="256">256 kbps</option>
-                    <option value="192">192 kbps</option>
-                    <option value="128">128 kbps</option>
-                    <option value="64">64 kbps</option>
-                    <option value="32">32 kbps</option>
-                    <option value="16">16 kbps</option>
-                </select>
-            </span>
-            <button>保存并且退出</button>
+            <button id="save-codec-setting">保存并且退出</button>
         </div>
     </div>
     <!-- 不显示的元素 -->

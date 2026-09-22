@@ -1,4 +1,4 @@
-export default class Setting {
+class Setting {
     constructor() {
         //如果没有保存的设置，创建默认设置
         if (localStorage.audioshop == null) {
@@ -47,3 +47,6 @@ export default class Setting {
         this.updateSetting();
     }
 }
+
+// 以单例形式导出，避免各模块各自持有一份互不同步的设置副本
+export default new Setting();

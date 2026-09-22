@@ -1,48 +1,133 @@
+:root {
+    --green-darkest: #2f4f3f;
+    --green-dark: #3f6b4f;
+    --green: #5a9367;
+    --green-light: #a8d5ba;
+    --green-lighter: #cdebd9;
+    --green-lightest: #eaf7e4;
+    --green-white: #f6fff8;
+    --green-hover: #d4f1c5;
+    --border: #bfe0cb;
+    --text-dark: #274a34;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
 body {
     margin: 0;
     overflow: hidden;
+    font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+    font-size: 13px;
+    color: var(--text-dark);
+    background: var(--green-white);
 }
 
 .hide {
     display: none;
 }
 
-.full-width {
-    width: 100vw;
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
+/* 顶部工具栏 */
 .top-bar {
-    height: 30px;
+    flex: 0 0 auto;
     display: flex;
-    justify-content: left;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: linear-gradient(180deg, var(--green-dark), var(--green-darkest));
+    border-bottom: 1px solid var(--green-darkest);
 }
 
+.tool-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color .12s ease;
+}
+
+.tool-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.tool-btn:active {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.tool-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+/* 底部操作区的按钮走浅色主题 */
+.operation .tool-btn {
+    color: var(--text-dark);
+}
+
+.operation .tool-btn:hover {
+    background: var(--green-hover);
+    border-color: var(--green);
+}
+
+.operation .tool-btn.secondary {
+    background: var(--green-light);
+    border-color: var(--green);
+}
+
+.operation .tool-btn.secondary:hover {
+    background: var(--green);
+    color: #fff;
+}
+
+/* 文件列表 */
 .file-list {
-    height: calc(50vh - 30px);
-    overflow-y: scroll;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    background: #fff;
 }
 
-.operation {
-    height: 50vh;
-    display: flex;
-}
-
-/* 表格 */
 table {
     width: 100%;
     border-collapse: collapse;
 }
 
+thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
 th,
 td {
-    border: 1px solid #ddd;
+    border: 1px solid var(--border);
     text-align: center;
-    padding: 8px;
+    padding: 6px 8px;
 }
 
 th {
-    background-color: #a8d5ba;
-    color: white;
+    background-color: var(--green);
+    color: #fff;
+    font-weight: 600;
 }
 
 .file-list-child {
@@ -51,15 +136,110 @@ th {
 }
 
 tr:nth-child(even) {
-    background-color: #eaf7e4;
+    background-color: var(--green-lightest);
 }
 
 tr:nth-child(odd) {
-    background-color: #f6fff8;
+    background-color: var(--green-white);
 }
 
 tr:hover {
-    background-color: #d4f1c5;
+    background-color: var(--green-hover);
+}
+
+tr.selected {
+    background-color: var(--green-light) !important;
+}
+
+tr.converting {
+    background-color: var(--green) !important;
+    color: #fff;
+}
+
+/* 底部操作面板 */
+.operation {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    background: var(--green-lightest);
+    border-top: 2px solid var(--green);
+    padding: 8px 12px;
+    gap: 6px;
+}
+
+.operation-choose {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.operation-divider {
+    width: 1px;
+    align-self: stretch;
+    background: var(--border);
+    margin: 0 4px;
+}
+
+.encoder-label {
+    color: var(--green-darkest);
+    font-weight: 600;
+}
+
+select {
+    padding: 4px 8px;
+    border: 1px solid var(--green);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--text-dark);
+}
+
+/* 状态栏 */
+.status-bar {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 28px;
+    padding: 0 10px;
+    background: var(--green-darkest);
+    color: #eafff0;
+    font-size: 12px;
+}
+
+.progress-block {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.progress-label {
+    white-space: nowrap;
+}
+
+progress {
+    width: 120px;
+    height: 10px;
+    accent-color: var(--green-light);
+    border-radius: 5px;
+    overflow: hidden;
+    border: none;
+}
+
+progress::-webkit-progress-bar {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 5px;
+}
+
+progress::-webkit-progress-value {
+    background-color: var(--green-light);
+    border-radius: 5px;
+    transition: width .15s ease;
+}
+
+progress::-moz-progress-bar {
+    background-color: var(--green-light);
+    border-radius: 5px;
 }
 
 flex-break {
