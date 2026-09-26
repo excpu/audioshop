@@ -1,6 +1,7 @@
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import OggCover from './ogg_cover';
+import Setting from './setting';
 
 var ffmpeg = null;
 var ffmpegReady = false;
@@ -18,9 +19,11 @@ export async function loadFFmpeg() {
         ffmpeg.on('log', ({ message }) => {
             console.log(message);
         });
+        return true;
     } catch (error) {
         ffmpegReady = false;
         console.error('FFmpeg 加载失败:', error);
+        return false;
     }
 }
 
@@ -193,7 +196,7 @@ export default class AudioFile {
             if (onProgress) onProgress(1);
             return {
                 data,
-                fileName: `${this.prefrredName || this.filePre}.${ext}`,
+                fileName: `${this.buildOutputBaseName()}.${ext}`,
             };
         } catch (error) {
             console.error(`FFmpeg 转码失败: format=${format}, codec=`, codec, error);
@@ -205,6 +208,38 @@ export default class AudioFile {
             await this.safeDeleteFile(outputName);
             if (coverName) await this.safeDeleteFile(coverName);
         }
+    }
+
+    buildOutputBaseName() {
+        const outputName = Setting.setting.outputName || { mode: 'original', custom: '' };
+        const artist = this.tags.artist || '';
+        const title = this.tags.title || this.filePre;
+        let baseName;
+
+        switch (outputName.mode) {
+            case 'artist-title':
+                baseName = `${artist} - ${title}`;
+                break;
+            case 'title-artist':
+                baseName = `${title} - ${artist}`;
+                break;
+            case 'custom':
+                baseName = (outputName.custom || this.filePre)
+                    .replace(/\{artist\}/gi, artist)
+                    .replace(/\{title\}/gi, title)
+                    .replace(/\{album\}/gi, this.tags.album || '')
+                    .replace(/\{track\}/gi, this.tags.track || '');
+                break;
+            case 'original':
+            default:
+                baseName = this.filePre;
+        }
+
+        const sanitized = baseName
+            .replace(/[<>:"/\\|?*\u0000-\u001f]/g, '_')
+            .replace(/[. ]+$/g, '')
+            .trim();
+        return this.prefrredName || sanitized || this.filePre;
     }
 
     // 依据格式与编码参数生成 ffmpeg 编码相关参数

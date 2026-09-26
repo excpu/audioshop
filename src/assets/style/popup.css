@@ -33,6 +33,32 @@
     margin: 4px 0 10px;
 }
 
+.output-name-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.output-name-option input {
+    accent-color: var(--green-dark);
+}
+
+#output-name-custom {
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 8px;
+    padding: 7px 9px;
+    border: 1px solid var(--green-light);
+    border-radius: 4px;
+}
+
+.output-name-hint {
+    margin: 6px 0 2px;
+    color: var(--green-dark);
+    font-size: 12px;
+}
+
 .param-row {
     display: block;
 }

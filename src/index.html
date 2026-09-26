@@ -88,7 +88,7 @@
 
         <!-- 状态栏 -->
         <div class="status-bar">
-            <span class="operation-status"></span>
+            <span id="ffmpeg-status" class="ffmpeg-status" data-state="loading" role="status" aria-live="polite">正在加载 FFmpeg…</span>
             <span class="operation-info"></span>
             <div class="progress-block">
                 <span class="progress-label">当前任务</span>
@@ -100,9 +100,24 @@
             </div>
         </div>
     </div>
+    <div id="file-context-menu" class="file-context-menu" role="menu" aria-label="音频文件操作" hidden>
+        <button id="delete-context-file" type="button" role="menuitem">
+            <span aria-hidden="true">&#128465;</span> 删除此音频
+        </button>
+    </div>
     <!-- 设置弹出框 -->
     <div class="popup">
         <div class="popup-content">
+            <section class="pop-hide" id="output-name-settings">
+                <h1>输出文件名</h1>
+                <label class="output-name-option"><input type="radio" name="output-name-mode" value="original"> 原文件名</label>
+                <label class="output-name-option"><input type="radio" name="output-name-mode" value="artist-title"> 艺术家 - 曲名</label>
+                <label class="output-name-option"><input type="radio" name="output-name-mode" value="title-artist"> 曲名 - 艺术家</label>
+                <label class="output-name-option"><input type="radio" name="output-name-mode" value="custom"> 自定义</label>
+                <input id="output-name-custom" type="text" maxlength="180" placeholder="例如 {artist} - {title}">
+                <p class="output-name-hint">可用占位符：{artist}、{title}、{album}、{track}</p>
+                <button id="save-output-name-setting">保存并退出</button>
+            </section>
             <span class="pop-hide" id="mp3-parameter">
                 <h1>MP3</h1>
                 编码方式

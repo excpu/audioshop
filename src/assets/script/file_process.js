@@ -7,8 +7,10 @@ export default class FileProcess {
     constructor() {
         this.counter = 0;
         this.fileList = [];
+        this.convertingIds = new Set();
         // 当前选中的在编辑元数据的文件
         this.display = null;
+        this.onDisplayCleared = null;
     }
 
     // 重新对已存在的文件 ID 进行归一化，避免删除任务后留下断裂的计数器值
@@ -38,7 +40,10 @@ export default class FileProcess {
     clear() {
         this.fileList = [];
         this.counter = 0;
+        this.convertingIds.clear();
+        this.display = null;
         document.getElementById('file-list-body').innerHTML = '';
+        if (this.onDisplayCleared) this.onDisplayCleared();
     }
 
     // 秒转分钟
@@ -120,13 +125,18 @@ export default class FileProcess {
                 this.setRowConverting(id, false);
                 continue;
             }
-            this.removeFile(id);
+            this.removeFile(id, true);
             if (onProgress) onProgress({ index: i + 1, total, currentProgress: 0 });
         }
     }
 
     // 给正在处理的行添加/移除高亮样式，让用户能直观看到当前处理中的任务
     setRowConverting(id, active) {
+        if (active) {
+            this.convertingIds.add(Number(id));
+        } else {
+            this.convertingIds.delete(Number(id));
+        }
         const row = document.getElementById(`file-list-child-no${id}`);
         if (!row) return;
         row.classList.toggle('converting', active);
@@ -146,24 +156,30 @@ export default class FileProcess {
     }
 
     // 从列表中移除已转换完成的项，并释放底层文件与封面资源
-    removeFile(id) {
+    removeFile(id, allowConverting = false) {
+        if (!allowConverting && this.convertingIds.has(Number(id))) {
+            return false;
+        }
         const index = this.findIndexById(id);
         if (index === -1) {
             const row = document.getElementById(`file-list-child-no${id}`);
             if (row) row.remove();
-            return;
+            return false;
         }
         const entry = this.fileList[index];
         if (entry && entry[1]) {
             entry[1].destroy();
         }
         this.fileList.splice(index, 1);
+        this.convertingIds.delete(Number(id));
         this.reindexCounter();
         const row = document.getElementById(`file-list-child-no${id}`);
         if (row) row.remove();
         if (this.display === Number(id)) {
             this.display = null;
+            if (this.onDisplayCleared) this.onDisplayCleared();
         }
+        return true;
     }
 
     // 后期迁移 - DOM操作

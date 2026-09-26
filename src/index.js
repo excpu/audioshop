@@ -6,7 +6,11 @@ import './assets/style/metadata.css';
 import './assets/style/popup.css';
 
 import { loadFFmpeg } from './assets/script/audio_file';
-loadFFmpeg();
+const ffmpegStatus = document.getElementById('ffmpeg-status');
+loadFFmpeg().then((loaded) => {
+	ffmpegStatus.dataset.state = loaded ? 'ready' : 'error';
+	ffmpegStatus.textContent = loaded ? '就绪' : 'FFmpeg 加载失败';
+});
 
 
 // 事件

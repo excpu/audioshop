@@ -6,6 +6,7 @@ const saveMetadata = document.getElementById('save-metadata');
 const encoderSelector = document.getElementById('encoder-selector');
 const coverEle = document.getElementById('element-cover');
 const coverInput = document.getElementById('cover-input');
+const outputSettingBtn = document.getElementById('output-setting-btn');
 
 const tagShow = {
     artist: document.getElementById('element-artist'),
@@ -16,6 +17,7 @@ const tagShow = {
     comment: document.getElementById('element-comment'),
     cover: document.getElementById('element-cover'),
 }
+const coverPlaceholder = tagShow.cover.getAttribute('src');
 
 
 import FileProcess from './file_process';
@@ -23,16 +25,67 @@ import { isFFmpegLoaded } from './audio_file';
 const fileProcess = new FileProcess();
 import Values from './values';
 const values = new Values();
+fileProcess.onDisplayCleared = function () {
+    Object.values(tagShow).forEach(function (field) {
+        if (field !== tagShow.cover) field.value = '';
+    });
+    tagShow.cover.src = coverPlaceholder;
+    values.currentEditing = null;
+};
 import Setting from "./setting";
 let setting = Setting;
 
 // 文件列表被点击
 fileListBody.addEventListener('click', function (event) {
-    console.log(event.target.parentNode);
-    values.currentEditing = event.target.parentNode.dataset.id;
-    console.log(values.currentEditing);
+    const row = event.target.closest('tr[data-id]');
+    if (!row) return;
+    values.currentEditing = row.dataset.id;
     fileProcess.showTagDetail(values.currentEditing, tagShow);
 });
+
+const fileContextMenu = document.getElementById('file-context-menu');
+const deleteContextFile = document.getElementById('delete-context-file');
+
+function closeFileContextMenu() {
+    fileContextMenu.hidden = true;
+    fileContextMenu.removeAttribute('data-file-id');
+}
+
+fileListBody.addEventListener('contextmenu', function (event) {
+    const row = event.target.closest('tr[data-id]');
+    if (!row) return;
+    event.preventDefault();
+    fileContextMenu.dataset.fileId = row.dataset.id;
+    deleteContextFile.disabled = row.classList.contains('converting');
+    fileContextMenu.hidden = false;
+    const bounds = fileContextMenu.getBoundingClientRect();
+    fileContextMenu.style.left = `${Math.min(event.clientX, window.innerWidth - bounds.width - 8)}px`;
+    fileContextMenu.style.top = `${Math.min(event.clientY, window.innerHeight - bounds.height - 8)}px`;
+});
+
+deleteContextFile.addEventListener('click', function () {
+    const id = Number(fileContextMenu.dataset.fileId);
+    const row = document.getElementById(`file-list-child-no${id}`);
+    if (!row || row.classList.contains('converting')) {
+        closeFileContextMenu();
+        return;
+    }
+    const title = row.children[1].textContent || '此音频';
+    if (!window.confirm(`确定删除“${title}”吗？`)) {
+        closeFileContextMenu();
+        return;
+    }
+    fileProcess.removeFile(id);
+    closeFileContextMenu();
+});
+
+document.addEventListener('click', function (event) {
+    if (!fileContextMenu.contains(event.target)) closeFileContextMenu();
+});
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') closeFileContextMenu();
+});
+window.addEventListener('scroll', closeFileContextMenu, true);
 
 // 选取文件
 addFiles.addEventListener('click', function () {
@@ -101,7 +154,7 @@ function encoderChange() {
 
 // 开始转换：使用当前编码设置转码列表内全部文件，完成后自动下载并移出列表
 const startConvert = document.getElementById('start-convert');
-const operationStatus = document.querySelector('.operation-status');
+const operationStatus = document.getElementById('ffmpeg-status');
 const currentProgressBar = document.getElementById('current-progress');
 const totalProgressBar = document.getElementById('total-progress');
 startConvert.addEventListener('click', async function () {
@@ -112,6 +165,7 @@ startConvert.addEventListener('click', async function () {
         return;
     }
     startConvert.disabled = true;
+    operationStatus.dataset.state = 'converting';
     operationStatus.textContent = '正在转换...';
     currentProgressBar.value = 0;
     totalProgressBar.value = 0;
@@ -120,11 +174,13 @@ startConvert.addEventListener('click', async function () {
             currentProgressBar.value = Math.round(currentProgress * 100);
             totalProgressBar.value = total ? Math.round(((index + currentProgress) / total) * 100) : 0;
         });
+        operationStatus.dataset.state = 'complete';
         operationStatus.textContent = '转换完成';
         currentProgressBar.value = 0;
         totalProgressBar.value = 100;
     } catch (error) {
         console.error(error);
+        operationStatus.dataset.state = 'error';
         operationStatus.textContent = '转换失败';
     } finally {
         startConvert.disabled = false;
@@ -135,6 +191,45 @@ startConvert.addEventListener('click', async function () {
 const encodeSettingBtn = document.getElementById('encode-setting-btn');
 const codecPopup = document.querySelector('.popup');
 const saveCodecSetting = document.getElementById('save-codec-setting');
+const outputNameSettings = document.getElementById('output-name-settings');
+const saveOutputNameSetting = document.getElementById('save-output-name-setting');
+const outputNameCustom = document.getElementById('output-name-custom');
+
+function hideSettingPanels() {
+    outputNameSettings.classList.add('pop-hide');
+    Object.values(codecPanels).forEach(function (item) {
+        document.getElementById(item.panel).classList.add('pop-hide');
+    });
+}
+
+outputSettingBtn.addEventListener('click', function () {
+    hideSettingPanels();
+    const outputName = setting.setting.outputName;
+    const selectedMode = document.querySelector(`input[name="output-name-mode"][value="${outputName.mode}"]`)
+        || document.querySelector('input[name="output-name-mode"][value="original"]');
+    selectedMode.checked = true;
+    outputNameCustom.value = outputName.custom || '';
+    outputNameSettings.classList.remove('pop-hide');
+    saveCodecSetting.classList.add('pop-hide');
+    codecPopup.style.display = 'flex';
+});
+
+saveOutputNameSetting.addEventListener('click', function () {
+    const selectedMode = document.querySelector('input[name="output-name-mode"]:checked');
+    if (!selectedMode) return;
+    if (selectedMode.value === 'custom' && !outputNameCustom.value.trim()) {
+        alert('请输入自定义文件名。');
+        outputNameCustom.focus();
+        return;
+    }
+    setting.setting.outputName = {
+        mode: selectedMode.value,
+        custom: outputNameCustom.value.trim(),
+    };
+    setting.updateSetting();
+    codecPopup.style.display = 'none';
+    saveCodecSetting.classList.remove('pop-hide');
+});
 
 // 每种格式对应的参数面板，以及面板内各输入框与设置字段的映射关系
 const codecPanels = {
@@ -148,10 +243,9 @@ const codecPanels = {
 
 // 打开编码设置弹窗，展示当前所选格式的参数面板并回填已保存的值
 encodeSettingBtn.addEventListener('click', function () {
+    hideSettingPanels();
+    saveCodecSetting.classList.remove('pop-hide');
     const format = encoderSelector.value;
-    Object.values(codecPanels).forEach(function (item) {
-        document.getElementById(item.panel).classList.add('pop-hide');
-    });
     const current = codecPanels[format];
     if (!current) return;
     document.getElementById(current.panel).classList.remove('pop-hide');

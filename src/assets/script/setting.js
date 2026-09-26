@@ -5,6 +5,10 @@ class Setting {
             this.setting = {
                 encoder: "mp3",
                 wasmPath: "https://tools.5share.site/open-asset/ffmpeg-core/dist/esm",
+                outputName: {
+                    mode: "original",
+                    custom: "{artist} - {title}",
+                },
                 codec: {
                     mp3: {
                         method: "vbr",
@@ -35,6 +39,10 @@ class Setting {
             localStorage.setItem('audioshop', settingString);
         } else {
             this.setting = JSON.parse(localStorage.audioshop);
+            this.setting.outputName ??= {
+                mode: "original",
+                custom: "{artist} - {title}",
+            };
         }
     }
 

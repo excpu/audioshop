@@ -152,8 +152,47 @@ tr.selected {
 }
 
 tr.converting {
-    background-color: var(--green) !important;
-    color: #fff;
+    background-color: #fff2cc !important;
+    color: #5c4610;
+}
+
+tr.converting td:first-child {
+    border-left: 4px solid #d59b22;
+}
+
+.file-context-menu {
+    position: fixed;
+    z-index: 200;
+    min-width: 150px;
+    padding: 4px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.file-context-menu[hidden] {
+    display: none;
+}
+
+.file-context-menu button {
+    width: 100%;
+    padding: 8px 10px;
+    border: 0;
+    border-radius: 3px;
+    background: transparent;
+    color: #9f2f28;
+    text-align: left;
+    cursor: pointer;
+}
+
+.file-context-menu button:hover:not(:disabled) {
+    background: #fff0ed;
+}
+
+.file-context-menu button:disabled {
+    color: #888;
+    cursor: not-allowed;
 }
 
 /* 底部操作面板 */
@@ -204,6 +243,45 @@ select {
     background: var(--green-darkest);
     color: #eafff0;
     font-size: 12px;
+}
+
+.ffmpeg-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.ffmpeg-status::before {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f0c14b;
+    content: "";
+}
+
+.ffmpeg-status[data-state="loading"]::before {
+    animation: ffmpeg-status-pulse 1.2s ease-in-out infinite;
+}
+
+.ffmpeg-status[data-state="ready"]::before,
+.ffmpeg-status[data-state="complete"]::before {
+    background: #73d69a;
+}
+
+.ffmpeg-status[data-state="converting"]::before {
+    background: #69b9ef;
+    animation: ffmpeg-status-pulse 1.2s ease-in-out infinite;
+}
+
+.ffmpeg-status[data-state="error"]::before {
+    background: #ff8177;
+}
+
+@keyframes ffmpeg-status-pulse {
+    50% {
+        opacity: 0.35;
+    }
 }
 
 .progress-block {
