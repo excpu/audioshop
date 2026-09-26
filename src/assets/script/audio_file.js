@@ -1,13 +1,14 @@
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import OggCover from './ogg_cover';
-import Setting from './setting';
+import Setting, { DEFAULT_WASM_PATH } from './setting';
 
 var ffmpeg = null;
 var ffmpegReady = false;
-//https://vip.123pan.cn/1816497153/OSS/lib/ffmpeg-core/dist/esm
 export async function loadFFmpeg() {
-    const baseURL = 'https://tools.5share.site/open-asset/ffmpeg-core/dist/esm';
+    ffmpegReady = false;
+    if (ffmpeg) ffmpeg.terminate();
+    const baseURL = (Setting.setting.wasmPath || DEFAULT_WASM_PATH).replace(/\/+$/, '');
     ffmpeg = new FFmpeg();
     try {
         await ffmpeg.load({

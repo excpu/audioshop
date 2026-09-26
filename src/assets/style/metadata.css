@@ -101,7 +101,8 @@
 
 .element-total-bottom {
     min-width: 115px;
-    width: calc(100% - 225px);
+    width: calc(100% - 99px);
+    margin-top: 10px;
 }
 
 #element-total textarea {

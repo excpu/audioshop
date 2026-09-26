@@ -108,6 +108,18 @@
     <!-- 设置弹出框 -->
     <div class="popup">
         <div class="popup-content">
+            <section class="pop-hide" id="program-settings">
+                <h1>FFmpeg Core</h1>
+                <label for="ffmpeg-core-source">Core 地址</label>
+                <select id="ffmpeg-core-source">
+                    <option value="default">默认地址</option>
+                    <option value="china">国内地址</option>
+                    <option value="custom">手动填写</option>
+                </select>
+                <input id="ffmpeg-core-custom" type="url" placeholder="https://example.com/ffmpeg-core/dist/esm" hidden>
+                <p class="output-name-hint">需要提供包含 ffmpeg-core.js 和 ffmpeg-core.wasm 的目录地址。更改后会重新加载 FFmpeg。</p>
+                <button id="save-program-setting" type="button">保存并重载</button>
+            </section>
             <section class="pop-hide" id="output-name-settings">
                 <h1>输出文件名</h1>
                 <label class="output-name-option"><input type="radio" name="output-name-mode" value="original"> 原文件名</label>

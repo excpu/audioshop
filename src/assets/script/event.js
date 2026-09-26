@@ -7,6 +7,7 @@ const encoderSelector = document.getElementById('encoder-selector');
 const coverEle = document.getElementById('element-cover');
 const coverInput = document.getElementById('cover-input');
 const outputSettingBtn = document.getElementById('output-setting-btn');
+const programSettingBtn = document.getElementById('program-setting-btn');
 
 const tagShow = {
     artist: document.getElementById('element-artist'),
@@ -21,7 +22,7 @@ const coverPlaceholder = tagShow.cover.getAttribute('src');
 
 
 import FileProcess from './file_process';
-import { isFFmpegLoaded } from './audio_file';
+import { isFFmpegLoaded, loadFFmpeg } from './audio_file';
 const fileProcess = new FileProcess();
 import Values from './values';
 const values = new Values();
@@ -196,11 +197,76 @@ const saveOutputNameSetting = document.getElementById('save-output-name-setting'
 const outputNameCustom = document.getElementById('output-name-custom');
 
 function hideSettingPanels() {
+    document.getElementById('program-settings').classList.add('pop-hide');
     outputNameSettings.classList.add('pop-hide');
     Object.values(codecPanels).forEach(function (item) {
         document.getElementById(item.panel).classList.add('pop-hide');
     });
 }
+
+const programSettings = document.getElementById('program-settings');
+const ffmpegCoreSource = document.getElementById('ffmpeg-core-source');
+const ffmpegCoreCustom = document.getElementById('ffmpeg-core-custom');
+const saveProgramSetting = document.getElementById('save-program-setting');
+const defaultCorePath = 'https://tools.5share.site/open-asset/ffmpeg-core/dist/esm';
+const chinaCorePath = 'https://1816497153.cdn.123clouddisk.com/1816497153/OSS/lib/ffmpeg-core/dist/esm';
+
+programSettingBtn.addEventListener('click', function () {
+    hideSettingPanels();
+    const corePath = setting.setting.wasmPath || defaultCorePath;
+    ffmpegCoreSource.value = corePath === defaultCorePath
+        ? 'default'
+        : corePath === chinaCorePath ? 'china' : 'custom';
+    ffmpegCoreCustom.value = ffmpegCoreSource.value === 'custom' ? corePath : '';
+    ffmpegCoreCustom.hidden = ffmpegCoreSource.value !== 'custom';
+    programSettings.classList.remove('pop-hide');
+    saveCodecSetting.classList.add('pop-hide');
+    codecPopup.style.display = 'flex';
+});
+
+ffmpegCoreSource.addEventListener('change', function () {
+    ffmpegCoreCustom.hidden = ffmpegCoreSource.value !== 'custom';
+});
+
+saveProgramSetting.addEventListener('click', async function () {
+    let corePath;
+    if (ffmpegCoreSource.value === 'default') {
+        corePath = defaultCorePath;
+    } else if (ffmpegCoreSource.value === 'china') {
+        corePath = chinaCorePath;
+    } else {
+        corePath = ffmpegCoreCustom.value.trim().replace(/\/+$/, '');
+        try {
+            const url = new URL(corePath);
+            if (!['http:', 'https:'].includes(url.protocol)) throw new Error();
+            corePath = url.href.replace(/\/+$/, '');
+        } catch {
+            alert('请输入有效的 HTTP 或 HTTPS Core 目录地址。');
+            ffmpegCoreCustom.focus();
+            return;
+        }
+    }
+
+    if (corePath === setting.setting.wasmPath) {
+        codecPopup.style.display = 'none';
+        saveCodecSetting.classList.remove('pop-hide');
+        return;
+    }
+    if (startConvert.disabled) {
+        alert('转码过程中不能更换 FFmpeg Core 地址。');
+        return;
+    }
+
+    setting.setting.wasmPath = corePath;
+    setting.updateSetting();
+    codecPopup.style.display = 'none';
+    saveCodecSetting.classList.remove('pop-hide');
+    operationStatus.dataset.state = 'loading';
+    operationStatus.textContent = '正在加载 FFmpeg...';
+    const loaded = await loadFFmpeg();
+    operationStatus.dataset.state = loaded ? 'ready' : 'error';
+    operationStatus.textContent = loaded ? '就绪' : 'FFmpeg 加载失败';
+});
 
 outputSettingBtn.addEventListener('click', function () {
     hideSettingPanels();

@@ -1,10 +1,12 @@
+export const DEFAULT_WASM_PATH = "https://tools.5share.site/open-asset/ffmpeg-core/dist/esm";
+
 class Setting {
     constructor() {
         //如果没有保存的设置，创建默认设置
         if (localStorage.audioshop == null) {
             this.setting = {
                 encoder: "mp3",
-                wasmPath: "https://tools.5share.site/open-asset/ffmpeg-core/dist/esm",
+                wasmPath: DEFAULT_WASM_PATH,
                 outputName: {
                     mode: "original",
                     custom: "{artist} - {title}",
@@ -43,6 +45,7 @@ class Setting {
                 mode: "original",
                 custom: "{artist} - {title}",
             };
+            this.setting.wasmPath ??= DEFAULT_WASM_PATH;
         }
     }
 

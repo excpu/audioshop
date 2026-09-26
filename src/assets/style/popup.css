@@ -33,6 +33,19 @@
     margin: 4px 0 10px;
 }
 
+.popup-content input[type="url"] {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 4px 0 8px;
+    padding: 7px 9px;
+    border: 1px solid var(--green-light);
+    border-radius: 4px;
+}
+
+.popup-content input[type="url"][hidden] {
+    display: none;
+}
+
 .output-name-option {
     display: flex;
     align-items: center;
